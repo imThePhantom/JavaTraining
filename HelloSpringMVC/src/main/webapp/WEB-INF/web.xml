@@ -15,6 +15,12 @@
     	<servlet-name>ReadAllParam</servlet-name>
     	<servlet-class>com.phantom.ReadAllParam</servlet-class>
     </servlet>
+    
+    <servlet>
+    	<display-name>O'clock</display-name>
+    	<servlet-name>ShowCurrentTime</servlet-name>
+    	<servlet-class>com.phantom.ShowCurrentTime</servlet-class>
+    </servlet>
 
 	<servlet-mapping>
 		<servlet-name>HelloSpring</servlet-name>
@@ -24,5 +30,10 @@
     <servlet-mapping>
     	<servlet-name>ReadAllParam</servlet-name>
     	<url-pattern>/readall</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+    	<servlet-name>ShowCurrentTime</servlet-name>
+    	<url-pattern>/clock</url-pattern>
     </servlet-mapping>
 </web-app>

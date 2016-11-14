@@ -17,5 +17,7 @@
 		<button formaction="hello">Hello Spring!</button>
         <button formaction="readall">Read All Parameters</button>
 	</form>
+	
+	<h2><a href="/HelloSpringMVC/clock">Show o'clock</a></h2>
 </body>
 </html>
