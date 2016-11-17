@@ -50,6 +50,5 @@ public class Main {
 		}
 		
 		((ClassPathXmlApplicationContext) context).close();
-
 	}
 }
