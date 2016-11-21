@@ -36,7 +36,7 @@ public class HelloSpring extends HttpServlet {
 		out.println("<title>Hello my friend</title>");
 		out.println("</head>");
 		out.println("<body>");
-		if (request.getParameter("name").length() == 0) {
+		if (request.getParameter("name").isEmpty()) {
 			out.println("<h1>" + message + "</h1>");
 		} else {
 			out.println("<h1> Hi, "

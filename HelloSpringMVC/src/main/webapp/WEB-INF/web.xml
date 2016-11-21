@@ -1,7 +1,9 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	id="WebApp_ID" version="2.5">
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+						http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
 
 	<display-name>Hello Spring MVC</display-name>
 
@@ -15,6 +17,12 @@
     	<servlet-name>ReadAllParam</servlet-name>
     	<servlet-class>com.phantom.ReadAllParam</servlet-class>
     </servlet>
+    
+    <servlet>
+    	<display-name>O'clock</display-name>
+    	<servlet-name>ShowCurrentTime</servlet-name>
+    	<servlet-class>com.phantom.ShowCurrentTime</servlet-class>
+    </servlet>
 
 	<servlet-mapping>
 		<servlet-name>HelloSpring</servlet-name>
@@ -24,5 +32,10 @@
     <servlet-mapping>
     	<servlet-name>ReadAllParam</servlet-name>
     	<url-pattern>/readall</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+    	<servlet-name>ShowCurrentTime</servlet-name>
+    	<url-pattern>/clock</url-pattern>
     </servlet-mapping>
 </web-app>
