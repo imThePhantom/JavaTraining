@@ -29,7 +29,7 @@ public class HibernateConfig {
 	private Properties getHibernateProperties() {
 		Properties properties = new Properties();
 		properties.put("hibernate.format_sql", "true");
-		properties.put("hibernate.show_sql", "true");
+		properties.put("hibernate.show_sql", "false");
 		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 		properties.put("hibernate.connection_poolsize", 1);
 		properties.put("hibernate.hbm2ddl.auto", "update");

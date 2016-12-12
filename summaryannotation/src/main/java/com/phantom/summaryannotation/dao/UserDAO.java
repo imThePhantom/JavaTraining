@@ -21,7 +21,7 @@ public class UserDAO {
 	private SessionFactory sessionFactory;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	public int addUser(User user) {
 		Session session = sessionFactory.getCurrentSession();
 		System.out.println(sessionFactory);
@@ -29,8 +29,8 @@ public class UserDAO {
 		try {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			session.save(User.class.getName(), user);
-			System.out.println("Created user: " + user.getUsername() + "|" + user.getEmail() 
-					+ "|" + user.getPassword() + "|" + user.getRole());
+			System.out.println("Created user: " + user.getUsername() + "|" + user.getEmail() + "|"
+					+ user.getPassword() + "|" + user.getRole());
 
 			return 1;
 		} catch (Throwable e) {
@@ -44,25 +44,25 @@ public class UserDAO {
 
 		try {
 			session.update(User.class.getName(), user);
-			System.out.println("Update user: " + user.getUsername() + "|" + user.getEmail() 
-			+ "|" + user.getPassword() + "|" + user.getRole());
-			
+			System.out.println("Updated user: " + user.getUsername() + "|" + user.getEmail() + "|"
+					+ user.getPassword() + "|" + user.getRole());
+
 			return 1;
 		} catch (Throwable e) {
 			System.out.println("Update user failed");
 			return 0;
 		}
 	}
-	
+
 	public int changePassword(User user) {
 		Session session = sessionFactory.getCurrentSession();
 
 		try {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			session.update(User.class.getName(), user);
-			System.out.println("Update user: " + user.getUsername() + "|" + user.getEmail() 
-			+ "|" + user.getPassword() + "|" + user.getRole());
-			
+			System.out.println("Change password: " + user.getUsername() + "|" + user.getEmail() + "|"
+					+ user.getPassword() + "|" + user.getRole());
+
 			return 1;
 		} catch (Throwable e) {
 			System.out.println("Update user failed");

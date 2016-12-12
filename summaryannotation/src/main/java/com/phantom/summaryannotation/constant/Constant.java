@@ -11,6 +11,7 @@ public class Constant {
 	public static final String GUEST_USERNAME = "guest";
 	public static final String GUEST_PASSWORD = "guest";
 	public static final String GUEST_ROLE = Role.GUEST;
+	public static final String GUEST_PIN = "1111111";
 	public static final Pattern EMAIL_PATTERN = Pattern
 			.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 					+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");

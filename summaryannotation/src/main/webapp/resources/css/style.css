@@ -32,6 +32,10 @@ footer {
 	margin: 0 5px;
 }
 
+.btn {
+	text-align: center;
+}
+
 .center {
 	text-align: center;
 }
@@ -41,6 +45,14 @@ footer {
 	visibility: hidden;
 	display: block;
 	clear: both;
+}
+
+.content-box {
+	margin: 50px auto;
+	background: lightgrey;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border: 1px solid #000;
 }
 
 .dropbtn {
@@ -98,6 +110,18 @@ footer {
 	margin: 5px 10px;
 }
 
+.label {
+	text-align: center;
+	margin: 0;
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+.login-box {
+	width: 350px;
+	padding: 10px;
+}
+
 .message {
 	padding: 15px;
 	margin-bottom: 20px;
@@ -113,9 +137,41 @@ footer {
 }
 
 .submit-btn {
-	display: block;
-	margin: 5px auto;
+	display: inline-block;
+	margin: 5px 10px;
 	border-radius: 3px;
+}
+
+.register-box {
+	width: 500px;
+	padding: 10px;
+}
+
+.reset-box {
+	width: 350px;
+	padding: 10px;
+}
+
+.update-password-box {
+	width: 550px;
+	padding: 10px;
+}
+
+.update-pin-box {
+	width: 350px;
+	padding: 10px;
+}
+
+.user-box {
+	width: 350px;
+	padding: 10px;
+}
+
+.user-info-nav {
+	width: 350px;
+	padding: 5px;
+	text-decoration: none;
+	text-align: center;
 }
 
 .user-panel {
@@ -143,55 +199,4 @@ footer {
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	border: 1px solid #000;
-}
-
-#login-box {
-	width: 350px;
-	padding: 10px;
-	margin: 100px auto;
-	background: lightgrey;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border: 1px solid #000;
-}
-
-#login-label {
-	text-align: center;
-	margin: 0;
-	font-size: 1.5em;
-	font-weight: bold;
-}
-
-#register-box {
-	width: 700px;
-	padding: 10px;
-	margin: 50px auto;
-	background: lightgrey;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border: 1px solid #000;
-}
-
-#register-label {
-	text-align: center;
-	margin: 0;
-	font-size: 1.5em;
-	font-weight: bold;
-}
-
-#reset-box {
-	width: 350px;
-	padding: 10px;
-	margin: 100px auto;
-	background: lightgrey;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border: 1px solid #000;
-}
-
-#reset-label {
-	text-align: center;
-	margin: 0;
-	font-size: 1.5em;
-	font-weight: bold;
 }

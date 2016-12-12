@@ -2,6 +2,7 @@ package com.phantom.summaryannotation.controller;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.phantom.summaryannotation.constant.Constant;
 import com.phantom.summaryannotation.constant.Role;
+import com.phantom.summaryannotation.dao.CoffeeDAO;
 import com.phantom.summaryannotation.dao.UserDAO;
+import com.phantom.summaryannotation.model.Coffee;
 import com.phantom.summaryannotation.model.User;
 import com.phantom.summaryannotation.validation.UserValidate;
 
@@ -32,26 +36,50 @@ public class HomeController {
 	private UserValidate userValidator;
 	@Autowired
 	private UserDAO userDAO;
-
-	@RequestMapping(value = { "", "home" }, method = RequestMethod.GET)
-	public String homePage(Model model, Locale locale) {
+	@Autowired
+	private CoffeeDAO coffeeDAO;
+	
+	
+	@RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
+	public String homePage(Model model, Locale locale, RedirectAttributes redirectAttr) {
 
 		model.addAttribute("title", messageSource.getMessage("home.title", null, locale));
 		model.addAttribute("greeting", messageSource.getMessage("greeting", null, locale));
 
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		User loggedInUser = userDAO.findUserByEmail(email);
+
+		if (loggedInUser != null && loggedInUser.getRole().equals(Role.INACTIVE_USER)) {
+			redirectAttr.addFlashAttribute("message",
+					messageSource.getMessage("message.user.role.inactive", null, locale) + "\n"
+							+ messageSource.getMessage("message.password.changerequired", null,
+									locale));
+			return "redirect:/user/change-password";
+		}
+
+		List<Coffee> listCoffees = coffeeDAO.listCoffee();
+		model.addAttribute("listCoffees", listCoffees);
+		
 		return "home";
 	}
 
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public String login(Model model, Locale locale,
 			@RequestParam(value = "error", required = false) String error,
-			@RequestParam(value = "logout", required = false) String logout) {
+			@RequestParam(value = "logout", required = false) String logout,
+			RedirectAttributes redirectAttr) {
 
 		model.addAttribute("title", messageSource.getMessage("login.title", null, locale));
 
+		if (!SecurityContextHolder.getContext().getAuthentication().getName()
+				.equals("anonymousUser")) {
+			redirectAttr.addFlashAttribute("message", "You already logged in.");
+			return "redirect:/home";
+		}
+
 		if (error != null) {
 			model.addAttribute("error",
-					messageSource.getMessage("error.invalid.login", null, locale));
+					messageSource.getMessage("error.login.invalid", null, locale));
 		}
 
 		if (logout != null) {
@@ -74,6 +102,7 @@ public class HomeController {
 	@RequestMapping(value = "register", method = RequestMethod.POST)
 	public String actionRegister(@ModelAttribute("user") User user, BindingResult result,
 			Model model, Locale locale) {
+
 		userValidator.validate(user, result);
 		System.out.println("User validated");
 
@@ -94,12 +123,12 @@ public class HomeController {
 
 		model.addAttribute("message",
 				messageSource.getMessage("message.register.completed", null, locale));
-		return "redirect:home";
+		return "redirect:login";
 	}
 
 	@RequestMapping(value = "reset-password", method = RequestMethod.GET)
 	public String resetPassword(Model model, Locale locale) {
-		model.addAttribute("title", messageSource.getMessage("reset.password.title", null, locale));
+		model.addAttribute("title", messageSource.getMessage("password.reset.title", null, locale));
 
 		User user = new User();
 		model.addAttribute("user", user);
@@ -109,27 +138,34 @@ public class HomeController {
 
 	@RequestMapping(value = "reset-password", method = RequestMethod.POST)
 	public String actionResetPassword(@ModelAttribute("user") User user, BindingResult result,
-			Model model, Locale locale) {
+			Model model, Locale locale, RedirectAttributes redirectAttr) {
 		userValidator.resetFormvalidate(user, result);
 		if (result.hasErrors()) {
 			return "home/reset-password";
 		}
 
 		User resetUser = userDAO.findUserByEmail(user.getEmail());
-		if (resetUser == null || !resetUser.getsPIN().equals(user.getsPIN())) {
+		if (resetUser == null) {
 			model.addAttribute("error",
-					messageSource.getMessage("error.resetform", null, locale));
+					messageSource.getMessage("error.reset.user.notfound", null, locale));
+			return "home/reset-password";
+		}
+
+		if (resetUser.getsPIN() != null && !resetUser.getsPIN().equals(user.getsPIN())) {
+			model.addAttribute("error",
+					messageSource.getMessage("error.pin.invalid", null, locale));
 			return "home/reset-password";
 		}
 
 		String newPassword = new BigInteger(60, new SecureRandom()).toString(12);
 		resetUser.setPassword(newPassword);
-		resetUser.setRole(Role.INACTIVE_USER);;
+		resetUser.setRole(Role.INACTIVE_USER);
 		userDAO.changePassword(resetUser);
-		model.addAttribute("message",
+
+		redirectAttr.addFlashAttribute("message",
 				messageSource.getMessage("message.newpassword", null, locale) + newPassword);
-		
-		return "home/reset-password";
+
+		return "redirect:login";
 	}
 
 	@RequestMapping(value = "403", method = RequestMethod.GET)
@@ -160,6 +196,7 @@ public class HomeController {
 			admin.setPassword("admin@admin");
 			admin.setEnabled(true);
 			admin.setRole(Role.ADMIN);
+			admin.setsPIN("00000000");
 			userDAO.addUser(admin);
 		}
 
@@ -171,6 +208,7 @@ public class HomeController {
 			guest.setUsername(Constant.GUEST_USERNAME);
 			guest.setPassword(Constant.GUEST_PASSWORD);
 			guest.setEnabled(true);
+			guest.setsPIN(Constant.GUEST_PIN);
 			guest.setRole(Constant.GUEST_ROLE);
 
 			userDAO.addUser(guest);

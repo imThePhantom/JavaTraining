@@ -19,6 +19,7 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import com.phantom.summaryannotation.validation.CoffeeValidate;
 import com.phantom.summaryannotation.validation.UserValidate;
 
 @Configuration
@@ -64,6 +65,11 @@ public class ApplicationContextConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public UserValidate userValidateService() {
 		return new UserValidate();
+	}
+	
+	@Bean
+	public CoffeeValidate coffeeValidate() {
+		return new CoffeeValidate();
 	}
 	
 	@Override

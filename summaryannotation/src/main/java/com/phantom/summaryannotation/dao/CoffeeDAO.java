@@ -6,9 +6,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.phantom.summaryannotation.model.Coffee;
 
+@Repository
+@Transactional
 public class CoffeeDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -18,10 +22,10 @@ public class CoffeeDAO {
 
 		try {
 			session.save(Coffee.class.getName(), coffee);
-
+			System.out.println("Added " + coffee.getName());
 			return 1;
 		} catch (Throwable e) {
-			e.printStackTrace();
+			System.out.println("Add " + coffee.getName() + " failed");
 			return 0;
 		}
 	}
@@ -31,11 +35,10 @@ public class CoffeeDAO {
 
 		try {
 			session.update(Coffee.class.getName(), coffee);
-
+			System.out.println("Updated " + coffee.getName());
 			return 1;
 		} catch (Throwable e) {
-			e.printStackTrace();
-			session.getTransaction().rollback();
+			System.out.println("Update " + coffee.getName() + " failed");
 			return 0;
 		}
 	}
@@ -45,7 +48,7 @@ public class CoffeeDAO {
 
 		try {
 			String sql = "select coffee from " + Coffee.class.getName() + " coffee"
-					+ " where coffee.coffeecCode = :code";
+					+ " where coffee.coffeeCode = :code";
 			@SuppressWarnings("unchecked")
 			Query<Coffee> query = session.createQuery(sql);
 			query.setParameter("code", code);
@@ -54,7 +57,7 @@ public class CoffeeDAO {
 
 			return coffee;
 		} catch (Throwable e) {
-			e.printStackTrace();
+			System.out.println("No coffee found.");
 			return null;
 		}
 	}
@@ -72,7 +75,7 @@ public class CoffeeDAO {
 
 			return coffees;
 		} catch (Throwable e) {
-			e.printStackTrace();
+			System.out.println("No coffee found.");
 			return null;
 		}
 	}
@@ -82,11 +85,10 @@ public class CoffeeDAO {
 
 		try {
 			session.delete(Coffee.class.getName(), coffee);
-
+			System.out.println("Delete " + coffee.getName() + " completed");
 			return 1;
 		} catch (Throwable e) {
-			e.printStackTrace();
-
+			System.out.println("Cannot delete " + coffee.getName());
 			return 0;
 		}
 	}

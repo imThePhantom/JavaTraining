@@ -28,22 +28,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		getHttp().authorizeRequests().antMatchers("/", "/home").permitAll()
-			.antMatchers("/order/**")
-				.access("hasAnyRole('USER', 'GUEST', 'ADMIN')")
-			.antMatchers("/user/**")
-				.access("hasAnyRole('USER', 'ADMIN')")
-			.antMatchers("/user/update-info")
-				.access("hasAnyRole('INACTIVE_USER', 'USER', 'ADMIN')")
-			.antMatchers("/admin/**")
-				.access("hasRole('ADMIN')")
-			.and().formLogin().loginPage("/login").failureUrl("/login?error")
-				.usernameParameter("email").passwordParameter("password")
-			.and().logout().logoutSuccessUrl("/login?logout")
-			.and().csrf()
-			.and().exceptionHandling().accessDeniedPage("/403")
-			.and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-				.maximumSessions(2);
+		http.authorizeRequests().antMatchers("/", "/home").permitAll()
+			.antMatchers("/order/**").access("hasRole('USER')")
+			.antMatchers("/user/change-password").access("hasAnyRole('INACTIVE_USER', 'USER')")
+			.antMatchers("/user/**").access("hasAnyRole('USER')")
+			.antMatchers("/admin/**").access("hasRole('ADMIN')");
+		
+		http.formLogin().loginPage("/login").failureUrl("/login?error")
+				.usernameParameter("email").passwordParameter("password");
+		http.logout().logoutSuccessUrl("/login?logout").deleteCookies("JSESSIONID");
+		http.csrf();
+		http.exceptionHandling().accessDeniedPage("/403");
+		http.sessionManagement().maximumSessions(2)
+			.and().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+			.sessionFixation().migrateSession();
 	}
 }

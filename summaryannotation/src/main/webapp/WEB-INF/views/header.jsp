@@ -3,20 +3,12 @@
 <!doctype html>
 <html>
 <head>
-<link href="<c:url value="/resources/css/style.css" />" rel="stylesheet" type="text/css">
+<link href="${stylesheetUrl}" rel="stylesheet" type="text/css">
 <meta charset="UTF-8)">
 <title>${title}</title>
 </head>
 <body>
 	<header>
-		<c:url value="/home" var="homeUrl" />
-		<c:url value="/logout" var="logoutUrl" />
-		<c:url value="/login" var="loginUrl" />
-		<c:url value="/register" var="registerUrl" />
-		<c:url value="/user" var="userUrl" />
-		<c:url value="/admin" var="adminUrl" />
-		<c:url value="/user/update-info" var="updateInfoUrl" />
-
 		<h1 class="inline">
 			<a href="${homeUrl}" class="webname">Spring MVC</a>
 		</h1>
@@ -39,11 +31,11 @@
 
 						<button onclick="dropdown()" class="dropbtn inline">▼</button>
 						<div id="dropdownBtn" class="dropdown-content">
-							<sec:authorize access="hasRole('ROLE_ADMIN')">
+							<sec:authorize access="hasRole('ADMIN')">
 								<a href="${adminUrl}"><fmt:message key="admin" /></a>
 							</sec:authorize>
-							<sec:authorize access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')">
-								<a href="${updateInfoUrl}"><fmt:message key="setting" /></a>
+							<sec:authorize access="hasAnyRole('USER', 'ADMIN')">
+								<a href="${userSettingUrl}"><fmt:message key="setting" /></a>
 							</sec:authorize>
 							<a href="javascript:formSubmit()"><fmt:message key="logout" /></a>
 						</div>

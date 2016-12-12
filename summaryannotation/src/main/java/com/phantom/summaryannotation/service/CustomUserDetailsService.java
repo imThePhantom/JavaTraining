@@ -26,13 +26,17 @@ public class CustomUserDetailsService implements UserDetailsService {
 		if (email.isEmpty()) {
 			throw new UsernameNotFoundException("Invalid email");
 		}
+		
 		com.phantom.summaryannotation.model.User user = userDao.findUserByEmail(email);
+		
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found");
 		}
 		
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority(user.getRole()));
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
+		
+		System.out.println("Security info: " + authorities.get(0));
 		
 		return buildUserForAuthentication(user, authorities);
 	}
